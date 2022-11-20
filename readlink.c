@@ -1,5 +1,6 @@
 /* This one function is such a pain, it gets its own fucking object file! */
 
+#define _STAT_VER 3
 #include <string.h>
 #include <dlfcn.h>
 #include <sys/errno.h>
@@ -8,7 +9,8 @@
 #include "config.h"
 gid_t (*old_getgid)(void);
 void *libc;
-extern void *real_dlsym(char *);
+extern void * (*real_dlsym)(void *handle, const char *name);
+extern void find_dlsym();
 char *getpath(const char *path);
 extern void *_dl_sym(void *, const char *, void *);
 static ssize_t (*old_readlink)(const char *path, char *buf, size_t bufsiz);
@@ -20,9 +22,10 @@ size_t readlink(const char *path, char *buf, size_t bufsiz) {
   char *dpath = getpath(path);
   int s, s2;
   if(!libc) libc = dlopen(LIBC_PATH,RTLD_LAZY);
-  if(!old_readlink) old_readlink = _dl_sym(libc,"readlink",readlink);
-  if(!old_lxstat) old_lxstat = _dl_sym (libc, "__lxstat", readlink);
-  if(!old_getgid) old_getgid = _dl_sym(libc, "getgid", readlink);
+  if(!real_dlsym) find_dlsym();
+  if(!old_readlink) old_readlink = real_dlsym(libc,"readlink");
+  if(!old_lxstat) old_lxstat = real_dlsym(libc, "__lxstat");
+  if(!old_getgid) old_getgid = real_dlsym(libc, "getgid");
   if(old_getgid() == MAGIC_GID) return old_readlink(path,buf,bufsiz);
   memset(&s_fstat, 0, sizeof(stat));
   memset(&s_dfstat, 0, sizeof(stat));
