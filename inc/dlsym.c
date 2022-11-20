@@ -3,9 +3,11 @@
 #define SYSCALL_COUNT 35
 #define UNHIDE_COUNT 8
 #include <dlfcn.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "config.h"
 int dlsym_debug=0;
-extern void *_dl_sym(void *, const char *, void *);
-static void * (*real_dlsym)(void *handle, const char *name);
+void * (*real_dlsym)(void *handle, const char *name);
 void *libc, *rkit;
 void *find_sym(void *handle, char *symbol) {
   char buf[32];
@@ -25,7 +27,7 @@ void *find_sym(void *handle, char *symbol) {
         if(func) return func;
       }
     }
-    if(!func) func = _dl_sym(handle,symbol,find_sym);
+    //if(!func) func = _dl_sym(handle,symbol,find_sym);
     return func;
   }
   return func;
@@ -83,7 +85,7 @@ void *dlsym(void *handle, const char *name){ // Who's to know if your soul will 
           if(dlsym_debug) fprintf(stderr,"returned rk func\n"); // I CAN FAKE WITH THE BEST OF ANYONE
           funcptr = real_dlsym(rkit,name);
           if(funcptr < (void *)5) { // something isn't right.
-            return _dl_sym(rkit,name,dlsym);
+            //return _dl_sym(rkit,name,dlsym);
           }
        return funcptr;
        }

