@@ -5,7 +5,7 @@
 #include <dlfcn.h>
 int dlsym_debug=0;
 extern void *_dl_sym(void *, const char *, void *);
-static void * (*real_dlsym)(void *handle, const char *name);
+void * (*real_dlsym)(void *handle, const char *name);
 void *libc, *rkit;
 void *find_sym(void *handle, char *symbol) {
   char buf[32];
